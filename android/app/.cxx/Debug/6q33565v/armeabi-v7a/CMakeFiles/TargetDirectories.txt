@@ -1,0 +1,2 @@
+C:/flutter/meu_projeto/loteria/android/app/.cxx/Debug/6q33565v/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/flutter/meu_projeto/loteria/android/app/.cxx/Debug/6q33565v/armeabi-v7a/CMakeFiles/rebuild_cache.dir

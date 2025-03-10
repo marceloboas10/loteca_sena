@@ -1,0 +1,1 @@
+C:\flutter\meu_projeto\loteria\build\app\intermediates\cxx\Debug\6q33565v\obj\x86_64
