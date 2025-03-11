@@ -28,14 +28,15 @@ class _ResultadoConcursoPageState extends State<ResultadoConcursoPage> {
 
   Future<void> buscarResultado() async {
     final url = Uri.parse(
-        'https://loteriascaixa-api.herokuapp.com/api/megasena/${widget.numeros.concurso}');
+        'https://api.guidi.dev.br/loteria/megasena/${widget.numeros.concurso}');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       final data = response.body;
       dadosApi = json.decode(data);
-
-      dezenas = data.split('"dezenas":')[1].split(']')[0].split(',').map((e) {
+      
+      dezenas =
+          data.split('"listaDezenas":')[1].split(']')[0].split(',').map((e) {
         return int.parse(e.replaceAll('[', '').replaceAll('"', ''));
       }).toList();
 
@@ -46,6 +47,16 @@ class _ResultadoConcursoPageState extends State<ResultadoConcursoPage> {
       setState(() {
         carregou = true;
       });
+    }
+  }
+
+  double parsePremio(dynamic valor) {
+    if (valor is int) {
+      return valor.toDouble();
+    } else if (valor is double) {
+      return valor;
+    } else {
+      throw Exception('Tipo de valor inesperado');
     }
   }
 
@@ -95,7 +106,7 @@ class _ResultadoConcursoPageState extends State<ResultadoConcursoPage> {
                         ),
                       ),
                       Text(
-                        dadosApi['data'].toString(),
+                        dadosApi['dataApuracao'].toString(),
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -199,28 +210,35 @@ class _ResultadoConcursoPageState extends State<ResultadoConcursoPage> {
                       ),
                       ResultadoSorteioWidget(
                         nomePremio: 'Sena',
-                        quantidadeAcertos:
-                            dadosApi['premiacoes'][0]['descricao'].toString(),
-                        quantidadeGanhadores:
-                            dadosApi['premiacoes'][0]['ganhadores'].toString(),
-                        valorPremio: dadosApi['premiacoes'][0]['valorPremio'],
+                        quantidadeAcertos: dadosApi['listaRateioPremio'][0]
+                                ['descricaoFaixa']
+                            .toString(),
+                        quantidadeGanhadores: dadosApi['listaRateioPremio'][0]
+                                ['numeroDeGanhadores']
+                            .toString(),
+                        valorPremio: parsePremio(
+                            dadosApi['listaRateioPremio'][0]['valorPremio']),
                       ),
                       ResultadoSorteioWidget(
                           nomePremio: 'Quina',
-                          quantidadeAcertos:
-                              dadosApi['premiacoes'][1]['descricao'].toString(),
-                          quantidadeGanhadores: dadosApi['premiacoes'][1]
-                                  ['ganhadores']
+                          quantidadeAcertos: dadosApi['listaRateioPremio'][1]
+                                  ['descricaoFaixa']
                               .toString(),
-                          valorPremio: dadosApi['premiacoes'][1]
+                          quantidadeGanhadores: dadosApi['listaRateioPremio'][1]
+                                  ['numeroDeGanhadores']
+                              .toString(),
+                          valorPremio: dadosApi['listaRateioPremio'][1]
                               ['valorPremio']),
                       ResultadoSorteioWidget(
                         nomePremio: 'Quadra',
-                        quantidadeAcertos:
-                            dadosApi['premiacoes'][2]['descricao'].toString(),
-                        quantidadeGanhadores:
-                            dadosApi['premiacoes'][2]['ganhadores'].toString(),
-                        valorPremio: dadosApi['premiacoes'][2]['valorPremio'],
+                        quantidadeAcertos: dadosApi['listaRateioPremio'][2]
+                                ['descricaoFaixa']
+                            .toString(),
+                        quantidadeGanhadores: dadosApi['listaRateioPremio'][2]
+                                ['numeroDeGanhadores']
+                            .toString(),
+                        valorPremio: parsePremio(
+                            dadosApi['listaRateioPremio'][2]['valorPremio']),
                       ),
                     ],
                   ),

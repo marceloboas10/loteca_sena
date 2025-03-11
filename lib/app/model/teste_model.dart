@@ -1,35 +1,35 @@
 class TesteModel {
-  final List<String> dezenas;
-  final int concurso;
-  final String data;
-  final bool acumulou;
-  final double valorEstimadoProximoConcurso;
+  final List<String> listaDezenas;
+  final int numero;
+  final String dataApuracao;
+  final bool acumulado;
+  final int valorEstimadoProximoConcurso;
   final String dataProximoConcurso;
 
   TesteModel(
-      {required this.dezenas,
-      required this.concurso,
-      required this.data,
-      required this.acumulou,
+      {required this.listaDezenas,
+      required this.numero,
+      required this.dataApuracao,
+      required this.acumulado,
       required this.valorEstimadoProximoConcurso,
       required this.dataProximoConcurso});
 
   factory TesteModel.fromMap(Map<String, dynamic> map) {
     return TesteModel(
-        dezenas: List<String>.from((map['dezenas'] as List)),
-        concurso: map['concurso'],
-        data: map['data'],
-        acumulou: map['acumulou'],
+        listaDezenas: List<String>.from((map['listaDezenas'] as List)),
+        numero: map['numero'],
+        dataApuracao: map['dataApuracao'],
+        acumulado: map['acumulado'],
         valorEstimadoProximoConcurso: map['valorEstimadoProximoConcurso'],
         dataProximoConcurso: map['dataProximoConcurso']);
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'concurso': concurso,
-      'data': data,
-      'dezenas': dezenas,
-      'acumulou': acumulou, 'valorEstimadoProximoConcurso': valorEstimadoProximoConcurso,
+      'numero': numero,
+      'dataApuracao': dataApuracao,
+      'listaDezenas': listaDezenas,
+      'acumulado': acumulado, 'valorEstimadoProximoConcurso': valorEstimadoProximoConcurso,
       'dataProximoConcurso': dataProximoConcurso
     };
   }

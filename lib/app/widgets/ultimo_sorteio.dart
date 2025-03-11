@@ -53,8 +53,8 @@ class UltimoSorteio extends StatelessWidget {
                     Column(
                       children: [
                         const Text('Último concurso'),
-                        Text('${sorteio.concurso}'),
-                        Text(sorteio.data),
+                        Text('${sorteio.numero}'),
+                        Text(sorteio.dataApuracao),
                       ],
                     )
                   ],
@@ -72,7 +72,7 @@ class UltimoSorteio extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 12, bottom: 12),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: sorteio.dezenas
+                          children: sorteio.listaDezenas
                               .map((dezena) => BolinhasWidget(
                                     numero: dezena,
                                     corBolinha: Colors.green.shade800,
@@ -81,7 +81,7 @@ class UltimoSorteio extends StatelessWidget {
                               .toList(),
                         ),
                       ),
-                      sorteio.acumulou == true
+                      sorteio.acumulado == true
                           ? const Center(child: Text('Acumulou!'))
                           : const Center(
                               child: Text('Vencedores: 1\nPrêmio: 111111')),
