@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loteria/app/data/database/my_database.dart';
 import 'package:loteria/app/model/numeros_sorteados_model.dart';
+import 'package:loteria/app/widgets/concurso_label_widget.dart';
 import 'package:loteria/app/widgets/snackbar_alert_widget.dart';
 
 List numerosSelecionados = [];
@@ -15,9 +16,15 @@ class BolinhasApostaWidget extends StatefulWidget {
 }
 
 var numerosSelecionadosModel = NumerosSorteadosModel();
-final concurso = TextEditingController();
+final numeroConcurso = TextEditingController();
 
 class _BolinhasApostaWidgetState extends State<BolinhasApostaWidget> {
+  @override
+  void dispose() {
+    numeroConcurso.clear();
+    super.dispose();
+  }
+
   int totalSelect = 0;
   List<bool> isSelectedList = List<bool>.filled(60, false);
 
@@ -25,6 +32,10 @@ class _BolinhasApostaWidgetState extends State<BolinhasApostaWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        ConcursoLabelWidget(numeroConcurso: numeroConcurso),
+        const SizedBox(
+          height: 22,
+        ),
         Expanded(
           child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -65,32 +76,43 @@ class _BolinhasApostaWidgetState extends State<BolinhasApostaWidget> {
           visible: numerosSelecionados.length == 6,
           child: TextButton(
               onPressed: () {
-                MyDatabase().insert(numerosSelecionadosModel);
-                String dataAtual =
-                    '${DateTime.now().day.toString().padLeft(2, '0')}/${DateTime.now().month.toString().padLeft(2, '0')}/${DateTime.now().year}';
+                if (numeroConcurso.text.isEmpty) {
+                  const SnackbarAlertWidget(
+                          duracao: 1,
+                          title: 'Informe o número do concurso',
+                          color: Colors.red)
+                      .show(context);
+                } else {
+                  MyDatabase().insert(numerosSelecionadosModel);
+                  String dataAtual =
+                      '${DateTime.now().day.toString().padLeft(2, '0')}/${DateTime.now().month.toString().padLeft(2, '0')}/${DateTime.now().year}';
 
-                numerosSelecionadosModel.numero1 =
-                    numerosSelecionados[0].toString();
-                numerosSelecionadosModel.numero2 =
-                    numerosSelecionados[1].toString();
-                numerosSelecionadosModel.numero3 =
-                    numerosSelecionados[2].toString();
-                numerosSelecionadosModel.numero4 =
-                    numerosSelecionados[3].toString();
-                numerosSelecionadosModel.numero5 =
-                    numerosSelecionados[4].toString();
-                numerosSelecionadosModel.numero6 =
-                    numerosSelecionados[5].toString();
-                numerosSelecionadosModel.data = dataAtual;
-                numerosSelecionadosModel.concurso = concurso.text;
-                const SnackbarAlertWidget(
-                        duracao: 2,
-                        title: 'Números Adicionados com Sucesso!',
-                        color: Colors.green)
-                    .show(context);
-                setState(() {
-                  numerosSelecionados.clear();
-                });
+                  numerosSelecionadosModel.numero1 =
+                      numerosSelecionados[0].toString();
+                  numerosSelecionadosModel.numero2 =
+                      numerosSelecionados[1].toString();
+                  numerosSelecionadosModel.numero3 =
+                      numerosSelecionados[2].toString();
+                  numerosSelecionadosModel.numero4 =
+                      numerosSelecionados[3].toString();
+                  numerosSelecionadosModel.numero5 =
+                      numerosSelecionados[4].toString();
+                  numerosSelecionadosModel.numero6 =
+                      numerosSelecionados[5].toString();
+                  numerosSelecionadosModel.data = dataAtual;
+                  numerosSelecionadosModel.concurso = numeroConcurso.text;
+
+                  const SnackbarAlertWidget(
+                          duracao: 2,
+                          title: 'Números Adicionados com Sucesso!',
+                          color: Colors.green)
+                      .show(context);
+                  setState(() {
+                    numerosSelecionados.clear();
+                    isSelectedList = List<bool>.filled(60, false);
+                    totalSelect = 0;
+                  });
+                }
               },
               child: Container(
                 height: 50,

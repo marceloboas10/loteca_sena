@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:loteria/app/widgets/bolinhas_aposta_widget.dart';
-import 'package:loteria/app/widgets/concurso_label_widget.dart';
 
 class ApostaPage extends StatefulWidget {
   const ApostaPage({super.key});
@@ -9,24 +8,25 @@ class ApostaPage extends StatefulWidget {
   State<ApostaPage> createState() => _ApostaPageState();
 }
 
-final numeroConcurso = TextEditingController();
-
 class _ApostaPageState extends State<ApostaPage> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Mega da Sorte'),
+          title: const Text('Adicionar Jogo'),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(12),
+        body: const Padding(
+          padding: EdgeInsets.only(
+            left: 12,
+            right: 12,
+          ),
           child: Column(
             children: [
-              ConcursoLabelWidget(numeroConcurso: numeroConcurso),
-              const SizedBox(
+              SizedBox(
                 height: 20,
               ),
-              const Flexible(
+              Flexible(
                 child: BolinhasApostaWidget(),
               ),
             ],

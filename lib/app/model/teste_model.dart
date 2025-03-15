@@ -5,6 +5,7 @@ class TesteModel {
   final bool acumulado;
   final int valorEstimadoProximoConcurso;
   final String dataProximoConcurso;
+  final List<dynamic> listaRateioPremio;
 
   TesteModel(
       {required this.listaDezenas,
@@ -12,7 +13,8 @@ class TesteModel {
       required this.dataApuracao,
       required this.acumulado,
       required this.valorEstimadoProximoConcurso,
-      required this.dataProximoConcurso});
+      required this.dataProximoConcurso,
+      required this.listaRateioPremio});
 
   factory TesteModel.fromMap(Map<String, dynamic> map) {
     return TesteModel(
@@ -21,7 +23,8 @@ class TesteModel {
         dataApuracao: map['dataApuracao'],
         acumulado: map['acumulado'],
         valorEstimadoProximoConcurso: map['valorEstimadoProximoConcurso'],
-        dataProximoConcurso: map['dataProximoConcurso']);
+        dataProximoConcurso: map['dataProximoConcurso'],
+        listaRateioPremio: map['listaRateioPremio']);
   }
 
   Map<String, dynamic> toMap() {
@@ -29,8 +32,10 @@ class TesteModel {
       'numero': numero,
       'dataApuracao': dataApuracao,
       'listaDezenas': listaDezenas,
-      'acumulado': acumulado, 'valorEstimadoProximoConcurso': valorEstimadoProximoConcurso,
-      'dataProximoConcurso': dataProximoConcurso
+      'acumulado': acumulado,
+      'valorEstimadoProximoConcurso': valorEstimadoProximoConcurso,
+      'dataProximoConcurso': dataProximoConcurso,
+      'listaRateioPremio': listaRateioPremio
     };
   }
 }

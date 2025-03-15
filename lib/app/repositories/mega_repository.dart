@@ -18,7 +18,6 @@ class MegaRepository implements MegaRepositoryImpl {
     if (response.statusCode == 200) {
       final List<TesteModel> numerosSorteados = [];
       final body = jsonDecode(response.body);
-      print(response.body);
 
       body['listaDezenas'].map((numero) {
         final TesteModel numeros = TesteModel.fromMap(numero);

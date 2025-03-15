@@ -137,6 +137,8 @@ class _MeusJogosPageState extends State<MeusJogosPage> {
                                           style: TextStyle(fontSize: 20),
                                           textAlign: TextAlign.center,
                                         ),
+                                        actionsAlignment:
+                                            MainAxisAlignment.center,
                                         actions: [
                                           TextButton(
                                               onPressed: () {
@@ -145,7 +147,8 @@ class _MeusJogosPageState extends State<MeusJogosPage> {
                                               child: const Text(
                                                 'Não',
                                                 style: TextStyle(
-                                                    color: Colors.red),
+                                                    color: Colors.red,
+                                                    fontSize: 18),
                                               )),
                                           TextButton(
                                             onPressed: () {
@@ -161,7 +164,8 @@ class _MeusJogosPageState extends State<MeusJogosPage> {
                                             child: const Text(
                                               'Sim',
                                               style: TextStyle(
-                                                  color: Colors.green),
+                                                  color: Colors.green,
+                                                  fontSize: 18),
                                             ),
                                           )
                                         ],

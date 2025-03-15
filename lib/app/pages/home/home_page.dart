@@ -10,20 +10,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('MEGA SENA'),
+        title: const Text('Mega da Sorte'),
       ),
-      body:  Padding(
-        padding:const EdgeInsets.all(16),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-           const AcessoRapido(),
-         const   SizedBox(
+            const AcessoRapido(),
+            const SizedBox(
               height: 30,
             ),
             UltimoSorteio(),

@@ -16,10 +16,18 @@ class SurpresinhaPage extends StatefulWidget {
   State<SurpresinhaPage> createState() => _HomePageState();
 }
 
-var numerosSorteadosModel = NumerosSorteadosModel();
-final concurso = TextEditingController();
-
 class _HomePageState extends State<SurpresinhaPage> {
+  
+  @override
+  void dispose() {
+    concurso.clear();
+    super.dispose();
+  }
+
+  var numerosSorteadosModel = NumerosSorteadosModel();
+
+  final concurso = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +115,7 @@ class _HomePageState extends State<SurpresinhaPage> {
                         if (concurso.text.isEmpty || todosNumeros.isEmpty) {
                           const SnackbarAlertWidget(
                                   duracao: 1,
-                                  title: 'Informe o Concurso',
+                                  title: 'Informe o número do concurso',
                                   color: Colors.red)
                               .show(context);
                         } else {
