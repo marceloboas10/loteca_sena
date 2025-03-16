@@ -19,10 +19,10 @@ class MegaRepository implements MegaRepositoryImpl {
       final List<TesteModel> numerosSorteados = [];
       final body = jsonDecode(response.body);
 
-      body['listaDezenas'].map((numero) {
-        final TesteModel numeros = TesteModel.fromMap(numero);
+      
+        final TesteModel numeros = TesteModel.fromMap(body);
         numerosSorteados.add(numeros);
-      }).toList();
+      
       return numerosSorteados;
     } else if (response.statusCode == 404) {
       throw NotFoundException('A URl não foi encontrada');
@@ -35,7 +35,6 @@ class MegaRepository implements MegaRepositoryImpl {
   Future<List<TesteModel>> getUltimoSorteio() async {
     final response = await client.get(
         url: 'https://api.guidi.dev.br/loteria/megasena/ultimo');
-    //url: 'https://loteriascaixa-api.herokuapp.com/api/megasena/latest');
 
     if (response.statusCode == 200) {
       final List<TesteModel> numerosSorteados = [];

@@ -17,13 +17,11 @@ class _MeusJogosPageState extends State<MeusJogosPage> {
   @override
   void initState() {
     super.initState();
-    carregou = false;
     buscarNumeros();
   }
 
   Future<List<NumerosSorteadosModel>> buscarNumeros() async {
     final numeros = await MyDatabase().listar();
-
     return numeros;
   }
 

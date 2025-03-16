@@ -1,8 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:loteria/app/data/http/http_client.dart';
 import 'package:loteria/app/model/numeros_sorteados_model.dart';
+import 'package:loteria/app/repositories/mega_repository.dart';
 import 'package:loteria/app/widgets/bolinhas_widget.dart';
-import 'package:http/http.dart' as http;
 import 'package:loteria/app/widgets/resultado_sorteio_widget.dart';
 
 class ResultadoConcursoPage extends StatefulWidget {
@@ -13,42 +13,8 @@ class ResultadoConcursoPage extends StatefulWidget {
   State<ResultadoConcursoPage> createState() => _ResultadoConcursoPageState();
 }
 
-List<int>? dezenas;
-var dadosApi = {};
-bool carregou = true;
-
 class _ResultadoConcursoPageState extends State<ResultadoConcursoPage> {
-  @override
-  void initState() {
-    super.initState();
-    dezenas = null;
-    carregou = false;
-    buscarResultado();
-  }
-
-  Future<void> buscarResultado() async {
-    final url = Uri.parse(
-        'https://api.guidi.dev.br/loteria/megasena/${widget.numeros.concurso}');
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final data = response.body;
-      dadosApi = json.decode(data);
-      
-      dezenas =
-          data.split('"listaDezenas":')[1].split(']')[0].split(',').map((e) {
-        return int.parse(e.replaceAll('[', '').replaceAll('"', ''));
-      }).toList();
-
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        carregou = true;
-      });
-    }
-  }
+  final MegaRepository repository = MegaRepository(client: HttpClientt());
 
   double parsePremio(dynamic valor) {
     if (valor is int) {
@@ -67,12 +33,26 @@ class _ResultadoConcursoPageState extends State<ResultadoConcursoPage> {
         foregroundColor: Colors.white,
         title: const Text('Mega Sena'),
       ),
-      body: carregou == false
-          ? const Center(
-              child: CircularProgressIndicator(
+      body: FutureBuilder(
+        future:
+            repository.getNumerosSorteados(widget.numeros.concurso.toString()),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+                child: CircularProgressIndicator(
               color: Colors.white,
-            ))
-          : Padding(
+            ));
+          } else if (snapshot.hasError) {
+            return Center(
+                child: Text(
+              'Concurso ${widget.numeros.concurso} não foi realizado!',
+              style: const TextStyle(color: Colors.white, fontSize: 20),
+            ));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('Nenhum sorteio encontrado'));
+          } else {
+            final sorteio = snapshot.data!.first;
+            return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
@@ -106,7 +86,7 @@ class _ResultadoConcursoPageState extends State<ResultadoConcursoPage> {
                         ),
                       ),
                       Text(
-                        dadosApi['dataApuracao'].toString(),
+                        sorteio.dataApuracao,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -127,43 +107,43 @@ class _ResultadoConcursoPageState extends State<ResultadoConcursoPage> {
                     children: [
                       BolinhasWidget(
                         numero: widget.numeros.numero1.toString(),
-                        corBolinha: dezenas!.contains(
-                                int.parse(widget.numeros.numero1.toString()))
+                        corBolinha: sorteio.listaDezenas
+                                .contains(widget.numeros.numero1.toString())
                             ? Colors.amber
                             : Colors.white,
                       ),
                       BolinhasWidget(
                         numero: widget.numeros.numero2.toString(),
-                        corBolinha: dezenas!.contains(
-                                int.parse(widget.numeros.numero2.toString()))
+                        corBolinha: sorteio.listaDezenas
+                                .contains(widget.numeros.numero2.toString())
                             ? Colors.amber
                             : Colors.white,
                       ),
                       BolinhasWidget(
                         numero: widget.numeros.numero3.toString(),
-                        corBolinha: dezenas!.contains(
-                                int.parse(widget.numeros.numero3.toString()))
+                        corBolinha: sorteio.listaDezenas
+                                .contains(widget.numeros.numero3.toString())
                             ? Colors.amber
                             : Colors.white,
                       ),
                       BolinhasWidget(
                         numero: widget.numeros.numero4.toString(),
-                        corBolinha: dezenas!.contains(
-                                int.parse(widget.numeros.numero4.toString()))
+                        corBolinha: sorteio.listaDezenas
+                                .contains(widget.numeros.numero4.toString())
                             ? Colors.amber
                             : Colors.white,
                       ),
                       BolinhasWidget(
                         numero: widget.numeros.numero5.toString(),
-                        corBolinha: dezenas!.contains(
-                                int.parse(widget.numeros.numero5.toString()))
+                        corBolinha: sorteio.listaDezenas
+                                .contains(widget.numeros.numero5.toString())
                             ? Colors.amber
                             : Colors.white,
                       ),
                       BolinhasWidget(
                         numero: widget.numeros.numero6.toString(),
-                        corBolinha: dezenas!.contains(
-                                int.parse(widget.numeros.numero6.toString()))
+                        corBolinha: sorteio.listaDezenas
+                                .contains(widget.numeros.numero6.toString())
                             ? Colors.amber
                             : Colors.white,
                       ),
@@ -182,12 +162,18 @@ class _ResultadoConcursoPageState extends State<ResultadoConcursoPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          BolinhasWidget(numero: dezenas![0].toString()),
-                          BolinhasWidget(numero: dezenas![1].toString()),
-                          BolinhasWidget(numero: dezenas![2].toString()),
-                          BolinhasWidget(numero: dezenas![3].toString()),
-                          BolinhasWidget(numero: dezenas![4].toString()),
-                          BolinhasWidget(numero: dezenas![5].toString()),
+                          BolinhasWidget(
+                              numero: sorteio.listaDezenas[0].toString()),
+                          BolinhasWidget(
+                              numero: sorteio.listaDezenas[1].toString()),
+                          BolinhasWidget(
+                              numero: sorteio.listaDezenas[2].toString()),
+                          BolinhasWidget(
+                              numero: sorteio.listaDezenas[3].toString()),
+                          BolinhasWidget(
+                              numero: sorteio.listaDezenas[4].toString()),
+                          BolinhasWidget(
+                              numero: sorteio.listaDezenas[5].toString()),
                         ],
                       ),
                       const Divider(),
@@ -210,41 +196,42 @@ class _ResultadoConcursoPageState extends State<ResultadoConcursoPage> {
                       ),
                       ResultadoSorteioWidget(
                         nomePremio: 'Sena',
-                        quantidadeAcertos: dadosApi['listaRateioPremio'][0]
-                                ['descricaoFaixa']
-                            .toString(),
-                        quantidadeGanhadores: dadosApi['listaRateioPremio'][0]
+                        quantidadeAcertos: sorteio.listaRateioPremio[0]
+                            ['descricaoFaixa'],
+                        quantidadeGanhadores: sorteio.listaRateioPremio[0]
                                 ['numeroDeGanhadores']
                             .toString(),
                         valorPremio: parsePremio(
-                            dadosApi['listaRateioPremio'][0]['valorPremio']),
+                          sorteio.listaRateioPremio[0]['valorPremio'],
+                        ),
                       ),
                       ResultadoSorteioWidget(
-                          nomePremio: 'Quina',
-                          quantidadeAcertos: dadosApi['listaRateioPremio'][1]
-                                  ['descricaoFaixa']
-                              .toString(),
-                          quantidadeGanhadores: dadosApi['listaRateioPremio'][1]
+                        nomePremio: 'Quina',
+                        quantidadeAcertos: sorteio.listaRateioPremio[1]
+                            ['descricaoFaixa'],
+                        quantidadeGanhadores: sorteio.listaRateioPremio[1]
+                                ['numeroDeGanhadores']
+                            .toString(),
+                        valorPremio: parsePremio(
+                            sorteio.listaRateioPremio[1]['valorPremio']),
+                      ),
+                      ResultadoSorteioWidget(
+                          nomePremio: 'Quadra',
+                          quantidadeAcertos: sorteio.listaRateioPremio[2]
+                              ['descricaoFaixa'],
+                          quantidadeGanhadores: sorteio.listaRateioPremio[2]
                                   ['numeroDeGanhadores']
                               .toString(),
-                          valorPremio: dadosApi['listaRateioPremio'][1]
-                              ['valorPremio']),
-                      ResultadoSorteioWidget(
-                        nomePremio: 'Quadra',
-                        quantidadeAcertos: dadosApi['listaRateioPremio'][2]
-                                ['descricaoFaixa']
-                            .toString(),
-                        quantidadeGanhadores: dadosApi['listaRateioPremio'][2]
-                                ['numeroDeGanhadores']
-                            .toString(),
-                        valorPremio: parsePremio(
-                            dadosApi['listaRateioPremio'][2]['valorPremio']),
-                      ),
+                          valorPremio: parsePremio(
+                              sorteio.listaRateioPremio[2]['valorPremio']))
                     ],
                   ),
                 ],
               ),
-            ),
+            );
+          }
+        },
+      ),
     );
   }
 }

@@ -48,11 +48,13 @@ class _BolinhasApostaWidgetState extends State<BolinhasApostaWidget> {
                       if (isSelectedList[index]) {
                         isSelectedList[index] = false;
                         totalSelect--;
-                        numerosSelecionados.remove(index + 1);
+                        numerosSelecionados
+                            .remove((index + 1).toString().padLeft(2, '0'));
                       } else if (totalSelect < 6) {
                         isSelectedList[index] = true;
                         totalSelect++;
-                        numerosSelecionados.add(index + 1);
+                        numerosSelecionados
+                            .add((index + 1).toString().padLeft(2, '0'));
                       }
                       numerosSelecionados.sort();
                     });

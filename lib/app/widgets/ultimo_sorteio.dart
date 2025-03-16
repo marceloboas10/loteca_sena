@@ -37,7 +37,7 @@ class UltimoSorteio extends StatelessWidget {
                 height: 10,
               ),
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.only(left: 12),
                 decoration: const BoxDecoration(
                     color: Color(0xFFF7FFFB),
                     borderRadius: BorderRadius.only(
@@ -57,12 +57,35 @@ class UltimoSorteio extends StatelessWidget {
                           fontSize: 22,
                           fontWeight: FontWeight.bold),
                     ),
-                    Column(
-                      children: [
-                        const Text('Último concurso'),
-                        Text('${sorteio.numero}'),
-                        Text(sorteio.dataApuracao),
-                      ],
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF00B37E),
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(28),
+                            topRight: Radius.circular(8)),
+                      ),
+                      child: Column(
+                        children: [
+                          const Text('Último concurso',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold)),
+                          Text(
+                            '${sorteio.numero}',
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(sorteio.dataApuracao,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold)),
+                        ],
+                      ),
                     )
                   ],
                 ),

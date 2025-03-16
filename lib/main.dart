@@ -31,6 +31,6 @@ class _LoteriaState extends State<Loteria> {
             ),
             scaffoldBackgroundColor: const Color(0xFF036548),
             useMaterial3: true),
-        home: const HomePage());
+        home: const HomePage(),);
   }
 }
