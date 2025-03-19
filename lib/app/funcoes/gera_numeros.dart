@@ -1,17 +1,39 @@
 import 'dart:math';
 
-List geradorNumnerosMega() {
+List geradorNunerosMega() {
   var random = Random();
-  var numeros = [];
-  for (var i = 0; i < 6; i++) {
+  var numeros = <int>[];
+  while (numeros.length < 6) {
     var nextInt = random.nextInt(60) + 1;
-    while (numeros.contains(nextInt)) {
-      nextInt = random.nextInt(60) + 1;
+    if (!numeros.contains(nextInt)) {
+      numeros.add(nextInt);
     }
-    numeros.add(nextInt);
   }
+  return numeros;
+}
 
-  
+List geradorNunerosParesMega() {
+  var random = Random();
+  var numeros = <int>[];
 
+  while (numeros.length < 6) {
+    var nextInt = random.nextInt(30) * 2 + 2;
+    if (!numeros.contains(nextInt)) {
+      numeros.add(nextInt);
+    }
+  }
+  return numeros;
+}
+
+List geradorNunerosImparesMega() {
+  var random = Random();
+  var numeros = <int>[];
+
+  while (numeros.length < 6) {
+    var nextInt = random.nextInt(30) * 2 + 1;
+    if (!numeros.contains(nextInt)) {
+      numeros.add(nextInt);
+    }
+  }
   return numeros;
 }

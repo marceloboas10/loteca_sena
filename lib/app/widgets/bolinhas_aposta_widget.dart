@@ -38,13 +38,14 @@ class _BolinhasApostaWidgetState extends State<BolinhasApostaWidget> {
         ),
         Expanded(
           child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 6, mainAxisSpacing: 10, crossAxisSpacing: 22),
-              itemCount: 60,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 6, mainAxisSpacing: 10, crossAxisSpacing: 22),
+            itemCount: 60,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  setState(
+                    () {
                       if (isSelectedList[index]) {
                         isSelectedList[index] = false;
                         totalSelect--;
@@ -57,22 +58,24 @@ class _BolinhasApostaWidgetState extends State<BolinhasApostaWidget> {
                             .add((index + 1).toString().padLeft(2, '0'));
                       }
                       numerosSelecionados.sort();
-                    });
-                  },
-                  child: CircleAvatar(
-                    backgroundColor: isSelectedList[index] == false
-                        ? Colors.white
-                        : Colors.amber,
-                    child: Text(
-                      '${index + 1}',
-                      style: TextStyle(
-                          fontSize: widget.tamanho ?? 26,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
-                    ),
+                    },
+                  );
+                },
+                child: CircleAvatar(
+                  backgroundColor: isSelectedList[index] == false
+                      ? Colors.white
+                      : Colors.amber,
+                  child: Text(
+                    (index + 1).toString().padLeft(2, '0'),
+                    style: TextStyle(
+                        fontSize: widget.tamanho ?? 26,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
                   ),
-                );
-              }),
+                ),
+              );
+            },
+          ),
         ),
         Visibility(
           visible: numerosSelecionados.length == 6,
