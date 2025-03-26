@@ -13,16 +13,23 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mega da Sorte'),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(90),
+        child: AppBar(
+          centerTitle: false,
+          title: const Text('Olá\nBoa sorte'),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
+            const SizedBox(
+              height: 40,
+            ),
             const AcessoRapido(),
             const SizedBox(
-              height: 30,
+              height: 60,
             ),
             UltimoSorteio(),
           ],
