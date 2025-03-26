@@ -1,6 +1,5 @@
 # Loteca Sena
 
-## Implemente o gerenciador de estados BLoC com Cubit em seus projetos
 
 Projeto de um aplicativo em Flutter onde eu salvo meus jogos da Mega Sena e utilizando uma API eu confiro o resultado dos corcurso. 
 
